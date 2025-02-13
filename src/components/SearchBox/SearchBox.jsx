@@ -1,29 +1,30 @@
-import React from "react"; // Імпортуємо React для використання JSX.
-import { useDispatch } from "react-redux"; // Імпортуємо хук useDispatch з Redux для відправки екшенів.
-import { changeFilter } from "../../redux/filtersSlice"; // Імпортуємо екшен changeFilter для зміни фільтра контактів.
-import css from "./SearchBox.module.css"; // Імпортуємо стилі для SearchBox з CSS модуля.
+import React from "react"; // Імпортуємо React для роботи з JSX
+import { useSelector, useDispatch } from "react-redux"; // Імпортуємо useSelector для отримання даних зі стору та useDispatch для відправки екшенів
+import { changeFilter } from "../../redux/filtersSlice"; // Імпортуємо екшен для зміни значення фільтра
+import css from "./SearchBox.module.css"; // Імпортуємо файл зі стилями для компонента
 
-const SearchBox = ({ value, onChange }) => {
-  // Оголошуємо компонент SearchBox, який приймає пропси: value (поточне значення фільтру) і onChange (функція для обробки зміни).
-  
-  const dispatch = useDispatch(); // Ініціалізуємо хук dispatch для відправки екшенів Redux.
+const SearchBox = () => {
+  // Отримуємо значення фільтра зі стану Redux
+  const filter = useSelector((state) => state.filters.name);
+  // Ініціалізуємо dispatch для відправки екшенів
+  const dispatch = useDispatch();
 
+  // Функція обробки зміни значення у полі введення
   const handleChange = (e) => {
-    // Обробник зміни значення в полі вводу, який відправляє екшен changeFilter в Redux.
-    dispatch(changeFilter(e.target.value)); // Відправляємо нове значення фільтру до Redux.
+    dispatch(changeFilter(e.target.value)); // Відправляємо екшен для зміни фільтра
   };
 
   return (
     <input
-      id="search" // Унікальний id для елемента input
-      type="text" // Тип інпуту — текстовий.
-      value={value} // Значення інпуту передається через пропс value.
-      onChange={handleChange} // Викликається handleChange при зміні значення інпуту.
-      className={css.searchInput} // Застосовуємо стилі для інпуту.
-      autoComplete="off" // Вимикаємо автозаповнення.
-      placeholder="Search Contacts" // Текст підказки, що з'являється в полі вводу.
+      id="search" // Унікальний ідентифікатор для інпуту
+      type="text" // Визначаємо тип поля введення як текстовий
+      value={filter} // Значення поля введення отримується зі стану Redux
+      onChange={handleChange} // Викликаємо функцію зміни фільтра при введенні
+      className={css.searchInput} // Додаємо стилі до поля введення
+      autoComplete="off" // Вимикаємо автозаповнення для інпуту
+      placeholder="Search Contacts" // Підказка для користувача
     />
   );
 };
 
-export default SearchBox; // Експортуємо компонент SearchBox для використання в інших частинах додатку.
+export default SearchBox; // Експортуємо компонент для використання в інших частинах застосунку
